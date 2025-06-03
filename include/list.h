@@ -13,8 +13,8 @@ class List
 public:
     using value_type = T;
     using size_type = std::size_t;
-    using iterator = Iterator<T>;
-    using const_iterator = Iterator<const T>;
+    using iterator = Iterator<T, false>;
+    using const_iterator = Iterator<T, true>;
 
     List() : head_(nullptr), size_(0) {}
     ~List()
@@ -25,20 +25,26 @@ public:
     List(const List&) = delete;
     List& operator=(const List&) = delete;
 
-    void push_back(const T& value)
+    void push_back(const T& value) 
     {
-        if (!head_)
+        Node<T>* node = new Node<T>(value);
+        if (!head_) 
         {
-            head_ = new Node<T>(value);
+            head_ = node;
+            head_->next = nullptr;
+            head_->prev = nullptr;
         }
         else
         {
-            Node<T>* tail = head_->prev;
-            Node<T>* new_node = new Node<T>(value, head_, tail);
-            tail->next = new_node;
-            head_->prev = new_node;
+            Node<T>* tail = head_;
+            while (tail->next)
+            {
+                tail = tail->next;
+            }
+            tail->next = node;
+            node->prev = tail;
+            node->next = nullptr;
         }
-        ++size_;
     }
 
     void push_front(const T& value)
@@ -97,6 +103,25 @@ public:
     iterator end()
     {
         return iterator(nullptr);
+    }
+    
+    const_iterator begin() const 
+    { 
+        return const_iterator(head_); 
+    }
+    
+    const_iterator end() const 
+    { 
+        return const_iterator(nullptr); 
+    }
+
+    const_iterator cbegin() const 
+    { 
+        return const_iterator(head_); 
+    }
+    const_iterator cend() const 
+    { 
+        return const_iterator(nullptr); 
     }
 
     size_type size() const
