@@ -1,5 +1,7 @@
 #ifndef ITERATOR_H
 #define ITERATOR_H
+#include <iterator>
+#include <concepts>
 #include "node.h"
 
 namespace clist
@@ -12,8 +14,8 @@ public:
     using iterator_category = std::bidirectional_iterator_tag;
     using value_type        = T;
     using difference_type   = std::ptrdiff_t;
-    using pointer           = T*;
-    using reference         = T&;
+    using pointer           = std::conditional_t<IsConst, const T*, T*>;
+    using reference         = std::conditional_t<IsConst, const T&, T&>;
 
     using node_type = Node<T>;
 
@@ -88,5 +90,8 @@ template<typename T>
 using const_iterator = Iterator<T, true>;
 
 }
+
+static_assert(std::bidirectional_iterator<clist::iterator<int>>);
+static_assert(std::bidirectional_iterator<clist::const_iterator<int>>);
 
 #endif
