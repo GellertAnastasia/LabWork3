@@ -1,3 +1,7 @@
+/* Anastasia Gellert st130144@student.spbu.ru
+	labwork 3
+*/
+
 #include <iostream>
 #include "list.h"
 

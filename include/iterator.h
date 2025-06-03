@@ -1,3 +1,7 @@
+/* Anastasia Gellert st130144@student.spbu.ru
+	labwork 3
+*/
+
 #ifndef ITERATOR_H
 #define ITERATOR_H
 

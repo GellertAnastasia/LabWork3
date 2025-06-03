@@ -1,3 +1,7 @@
+/* Anastasia Gellert st130144@student.spbu.ru
+	labwork 3
+*/
+
 #ifndef LIST_H
 #define LIST_H
 #include "iterator.h"
