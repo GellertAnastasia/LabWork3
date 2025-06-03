@@ -2,10 +2,12 @@
 #define ITERATOR_H
 #include "node.h"
 
-namespace clist {
+namespace clist
+{
 
 template<typename T>
-class Iterator {
+class Iterator
+{
 public:
     using iterator_category = std::bidirectional_iterator_tag;
     using value_type        = T;
@@ -21,40 +23,55 @@ public:
     Iterator(const Iterator& other) = default;
     Iterator& operator=(const Iterator& other) = default;
 
-    reference operator*() const { return ptr_->data; }
-    pointer operator->() const { return &(ptr_->data); }
+    reference operator*() const
+    {
+        return ptr_->data;
+    }
+    pointer operator->() const
+    {
+        return &(ptr_->data);
+    }
 
-    Iterator& operator++() {
+    Iterator& operator++()
+    {
         ptr_ = ptr_->next;
         return *this;
     }
 
-    Iterator operator++(int) {
+    Iterator operator++(int)
+    {
         Iterator temp = *this;
         ++(*this);
         return temp;
     }
 
-    Iterator& operator--() {
+    Iterator& operator--()
+    {
         ptr_ = ptr_->prev;
         return *this;
     }
 
-    Iterator operator--(int) {
+    Iterator operator--(int)
+    {
         Iterator temp = *this;
         --(*this);
         return temp;
     }
 
-    bool operator==(const cyclic_iterator& other) const {
+    bool operator==(const Iterator& other) const
+    {
         return ptr_ == other.ptr_;
     }
 
-    bool operator!=(const cyclic_iterator& other) const {
+    bool operator!=(const Iterator& other) const
+    {
         return ptr_ != other.ptr_;
     }
 
-    node_type* node() const { return ptr_; }
+    node_type* node() const
+    {
+        return ptr_;
+    }
 
 private:
     node_type* ptr_;

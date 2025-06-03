@@ -1,10 +1,11 @@
 #ifndef NODE_H
 #define NODE_H
-#include <vector>
 
-namespace clist {
+namespace clist
+{
 template<typename T>
-class Node {
+class Node
+{
 public:
     T data;
     Node* next;
