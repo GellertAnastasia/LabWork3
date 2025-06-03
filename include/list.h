@@ -25,26 +25,24 @@ public:
     List(const List&) = delete;
     List& operator=(const List&) = delete;
 
-    void push_back(const T& value) 
+    void push_back(const T& value)
     {
         Node<T>* node = new Node<T>(value);
-        if (!head_) 
+        if (!head_)
         {
             head_ = node;
-            head_->next = nullptr;
-            head_->prev = nullptr;
+            head_->next = head_;
+            head_->prev = head_;
         }
         else
         {
-            Node<T>* tail = head_;
-            while (tail->next)
-            {
-                tail = tail->next;
-            }
+            Node<T>* tail = head_->prev;
             tail->next = node;
             node->prev = tail;
-            node->next = nullptr;
+            node->next = head_;
+            head_->prev = node;
         }
+        ++size_;
     }
 
     void push_front(const T& value)
@@ -87,8 +85,10 @@ public:
             Node<T>* old_head = head_;
             Node<T>* new_head = head_->next;
             Node<T>* tail = head_->prev;
+
             tail->next = new_head;
             new_head->prev = tail;
+
             delete old_head;
             head_ = new_head;
         }
@@ -97,31 +97,31 @@ public:
 
     iterator begin()
     {
-        return iterator(head_);
+        return iterator(head_, head_, false);
     }
 
     iterator end()
     {
-        return iterator(nullptr);
-    }
-    
-    const_iterator begin() const 
-    { 
-        return const_iterator(head_); 
-    }
-    
-    const_iterator end() const 
-    { 
-        return const_iterator(nullptr); 
+        return iterator(head_, head_, true);
     }
 
-    const_iterator cbegin() const 
-    { 
-        return const_iterator(head_); 
+    const_iterator begin() const
+    {
+        return const_iterator(head_, head_, false);
     }
-    const_iterator cend() const 
-    { 
-        return const_iterator(nullptr); 
+
+    const_iterator end() const
+    {
+        return const_iterator(head_, head_, true);
+    }
+
+    const_iterator cbegin() const
+    {
+        return const_iterator(head_, head_, false);
+    }
+    const_iterator cend() const
+    {
+        return const_iterator(head_, head_, true);
     }
 
     size_type size() const
